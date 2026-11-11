@@ -1,0 +1,597 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Concrete Frames Shapes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a draughtsman's plate set in black ink on white. Family sections of numbered plates, a lamp in the title block, and a bench for combining shapes. */
+:root {
+  color-scheme: light;
+  --paper: #f1f1f1; --sheet: #ffffff; --ink: #000000; --rule: #cfcfcf; --muted: #5c5c5c;
+  --f-label: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-data: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+body { background: var(--paper); color: var(--ink); font-family: var(--f-label); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+header { display: grid; grid-template-columns: 1fr auto; gap: 18px 28px; align-items: end; border-bottom: 2px solid var(--ink); padding-bottom: 18px; }
+.intro { display: grid; gap: 10px; min-width: 0; }
+h1 { margin: 0; font-size: clamp(30px, 5vw, 52px); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; line-height: 1; text-wrap: balance; }
+.sub { margin: 0; max-width: 64ch; color: var(--muted); font-size: 16px; line-height: 1.45; }
+.legend { font-family: var(--f-data); font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.lamp { display: grid; grid-template-columns: auto auto; gap: 8px 14px; align-items: center; font-family: var(--f-data); font-size: 11.5px; }
+.lamp .lbl { grid-column: 1 / -1; letter-spacing: .08em; text-transform: uppercase; }
+.pad { width: 104px; height: 104px; border: 1px solid var(--ink); border-radius: 50%; position: relative; background: var(--sheet); touch-action: none; cursor: crosshair; }
+.pad::before, .pad::after { content: ""; position: absolute; background: var(--rule); }
+.pad::before { left: 50%; top: 6px; bottom: 6px; width: 1px; }
+.pad::after { top: 50%; left: 6px; right: 6px; height: 1px; }
+.pad:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.sun { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--ink); z-index: 1; pointer-events: none; }
+.sun::after { content: ""; position: absolute; inset: -5px; border: 1px solid var(--ink); border-radius: 50%; }
+.pad.off .sun { background: var(--sheet); }
+.colors { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding-top: 8px; border-top: 1px solid var(--rule); }
+.colors .lbl { width: 100%; }
+.colors label { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+.colors input[type=color] { width: 34px; height: 24px; padding: 0; border: 1px solid var(--ink); background: none; cursor: pointer; }
+.lamp-side { display: grid; gap: 8px; color: var(--muted); max-width: 18ch; line-height: 1.4; }
+.btn { font: inherit; font-family: var(--f-data); font-size: 11.5px; background: var(--sheet); color: var(--ink); border: 1px solid var(--ink); padding: 6px 10px; cursor: pointer; justify-self: start; }
+.btn:hover { background: var(--ink); color: var(--sheet); }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.btn.solid { background: var(--ink); color: var(--sheet); }
+.btn:disabled, .btn:disabled:hover { opacity: .3; cursor: default; background: var(--sheet); color: var(--ink); }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font-family: var(--f-data); font-size: 11.5px; }
+.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+.toc a:hover { border-color: var(--ink); }
+.order { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-family: var(--f-data); font-size: 11.5px; color: var(--muted); }
+.order select { max-width: 100%; }
+.bench { display: grid; grid-template-columns: 1fr auto; gap: 12px 20px; align-items: center; background: var(--sheet); border: 1px solid var(--ink); padding: 16px 18px; }
+.bench h2 { margin: 0; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; }
+.bench p { margin: 4px 0 0; color: var(--muted); font-size: 15px; line-height: 1.4; max-width: 60ch; }
+.sections { display: grid; gap: 44px; }
+.sec { display: grid; gap: 14px; scroll-margin-top: 16px; }
+.sec h2 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
+.sec h2 span { font-family: var(--f-data); font-size: 11.5px; font-weight: 400; color: var(--muted); letter-spacing: 0; text-transform: none; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 14px; }
+.plate { background: var(--sheet); border: 1px solid var(--rule); display: grid; grid-template-rows: auto 1fr; cursor: zoom-in; padding: 0; text-align: left; color: inherit; font: inherit; position: relative; }
+.plate:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.art { position: relative; aspect-ratio: 1; width: 100%; }
+.art canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.art .wait { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-data); font-size: 11px; color: var(--rule); }
+.art.live .wait { display: none; }
+.tb { display: grid; grid-template-columns: auto 1fr; border-top: 1px solid var(--ink); }
+.no { font-family: var(--f-data); font-weight: 500; font-size: 12.5px; padding: 10px 11px; border-right: 1px solid var(--ink); display: grid; align-content: center; }
+.meta { padding: 8px 11px; display: grid; gap: 3px; min-width: 0; align-content: center; }
+.name { font-weight: 600; font-size: 15px; letter-spacing: .02em; text-transform: uppercase; line-height: 1.15; overflow-wrap: anywhere; }
+.data { font-family: var(--f-data); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.del { position: absolute; top: 6px; right: 6px; font-family: var(--f-data); font-size: 11px; background: var(--sheet); border: 1px solid var(--rule); padding: 2px 6px; cursor: pointer; color: var(--muted); }
+.del:hover { border-color: var(--ink); color: var(--ink); }
+dialog { border: 1px solid var(--ink); background: var(--sheet); color: var(--ink); padding: 0; max-width: min(94vw, 760px); width: 100%; max-height: 94vh; overflow: auto; }
+dialog::backdrop { background: rgba(0,0,0,.6); }
+.stage { touch-action: none; cursor: grab; user-select: none; max-width: min(100%, 74vh); margin: 0 auto; }
+.stage.drag { cursor: grabbing; }
+dialog.editing .stage { max-width: min(100%, 50vh); }
+.stage .pad { position: absolute; right: 12px; top: 12px; width: 76px; height: 76px; z-index: 2; }
+.snap { position: absolute; right: 12px; bottom: 10px; display: flex; gap: 6px; z-index: 2; }
+.snap .btn { padding: 6px 9px; }
+.hint { position: absolute; left: 12px; bottom: 12px; font-family: var(--f-data); font-size: 11px; color: var(--muted); pointer-events: none; max-width: 45%; }
+dialog .tb { grid-template-columns: auto 1fr auto auto; }
+dialog .close:disabled { color: var(--muted); cursor: default; }
+dialog .close { font: inherit; font-family: var(--f-data); font-size: 12px; background: none; color: var(--ink); border: 0; border-left: 1px solid var(--ink); padding: 0 16px; cursor: pointer; }
+.builder { border-top: 1px solid var(--ink); padding: 14px 16px 16px; display: grid; gap: 12px; }
+.builder[hidden] { display: none; }
+.layers { display: grid; gap: 8px; }
+.mv { display: flex; gap: 4px; }
+.mv .btn, .layer .rm { padding: 5px 8px; }
+.pos { font-family: var(--f-data); font-size: 10.5px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.layer { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.2fr) minmax(0, 1.3fr) auto auto; gap: 8px; align-items: center; font-family: var(--f-data); font-size: 11.5px; }
+.layer select, .layer input[type=range], .bname { width: 100%; min-width: 0; }
+select, .bname { font: inherit; font-family: var(--f-data); font-size: 12px; background: var(--sheet); color: var(--ink); border: 1px solid var(--ink); padding: 5px 6px; border-radius: 0; }
+.layer label { display: grid; gap: 2px; color: var(--muted); }
+input[type=range] { accent-color: var(--ink); }
+.brow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.brow .note { font-family: var(--f-data); font-size: 11px; color: var(--muted); }
+.bname { max-width: 280px; }
+footer { font-family: var(--f-data); font-size: 11.5px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 14px; line-height: 1.5; }
+.nogl { background: var(--sheet); border: 1px solid var(--ink); padding: 14px; font-family: var(--f-data); font-size: 12px; }
+@media (max-width: 640px) { header, .bench { grid-template-columns: 1fr; } .layer { grid-template-columns: 1fr 1fr; } .layer select.shape { grid-column: 1 / -1; } .layer .rm { justify-self: end; } }
+</style>
+<div class="wrap">
+  <header>
+    <div class="intro">
+      <h1>Concrete Frames — Shapes</h1>
+      <p class="sub" id="sub"></p>
+      <nav class="toc" id="toc" aria-label="Families"></nav>
+      <div class="order"><label for="sortBy">Arrange plates</label><select id="sortBy"><option value="family">By family</option><option value="simple">By complexity, simplest first</option><option value="complex">By complexity, most complex first</option></select></div>
+    </div>
+    <div class="lamp">
+      <span class="lbl">Light from</span>
+      <div class="pad" id="pad" tabindex="0" role="slider" aria-label="Light direction. Drag, or use the arrow keys."><div class="sun"></div></div>
+      <div class="lamp-side"><span>Drag the lamp. Centre lights the shape head-on; the rim lights it from the side.</span><button class="btn" id="shadeBtn" type="button">Lines only</button></div>
+      <div class="colors"><span class="lbl">Background</span><label>Page <input type="color" id="cPaper" value="#f1f1f1"></label><label>Plates <input type="color" id="cSheet" value="#ffffff"></label><button class="btn" id="cReset" type="button">Reset</button></div>
+    </div>
+  </header>
+  <div class="nogl" id="nogl" hidden>This page draws every shape live with WebGL, which this browser has turned off. Try a current Firefox, Chrome or Safari.</div>
+  <section class="bench">
+    <div><h2>Combine shapes</h2><p>Stack any of the shapes below into your own interlocking piece. Set each one's size and turn, spin the result, and save it to Your combinations.</p></div>
+    <button class="btn solid" id="newCombo" type="button">Make a combination</button>
+  </section>
+  <main id="grid" class="sections"></main>
+  <footer>Drawn live from plane geometry. The first 24 use the animation's own beams; the rest put one concrete beam along every edge. Johnson solid coordinates come from Nat Alison's open-source Polyhedra Viewer. Saved combinations live in this browser only. Save image downloads a PNG of the view you are looking at.</footer>
+</div>
+<dialog id="dlg">
+  <div class="art stage" id="stage"><canvas id="cv"></canvas><div class="wait">Drawing…</div>
+    <div class="pad" id="pad2" tabindex="0" role="slider" aria-label="Light direction"><div class="sun"></div></div>
+    <div class="hint" id="hint">Drag to spin · double-click to reset</div>
+    <div class="snap"><button class="btn" id="snapH" type="button" title="Turn the nearest face flat on top">Horizontal</button><button class="btn" id="snapV" type="button" title="Turn the nearest face upright, facing you">Vertical</button></div></div>
+  <div class="tb"><div class="no" id="dno"></div><div class="meta"><div class="name" id="dname"></div><div class="data" id="ddata"></div></div><button class="close" id="dsave" type="button" hidden>Save image</button><button class="close" id="dclose" type="button">Close</button></div>
+  <div class="builder" id="builder" hidden>
+    <div class="brow"><label class="note" for="arrange">Arrange</label><select id="arrange"><option value="together">Interlocked, sharing one centre</option><option value="stack">Stacked on top of each other</option></select><span class="note" id="stackNote"></span></div>
+    <div class="layers" id="layers"></div>
+    <div class="brow"><button class="btn" id="addLayer" type="button">Add a shape</button><button class="btn" id="addBelow" type="button" hidden>Add underneath</button><button class="btn" id="randLayer" type="button">Random mix</button></div>
+    <div class="brow"><input class="bname" id="bname" type="text" placeholder="Name this combination" aria-label="Combination name"><button class="btn solid" id="saveCombo" type="button">Save to my combinations</button><span class="note" id="saveNote" role="status"></span></div>
+  </div>
+</dialog>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const DATA = {"order":["In the animation","Platonic","Archimedean","Catalan","Prisms","Johnson: pyramids and cupolas","Johnson: stretched and twisted","Johnson: augmented and diminished","Johnson: gyrate and rare","Stars","Zonohedra and crystals","Geodesic and Goldberg","Compounds","More compounds","Rings","In-between shapes"],"shapes":[{"name":"Cube","fam":"In the animation","file":"geo/in-the-animation.json","pieces":1,"beams":12},{"name":"Star tetrahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":2,"beams":12},{"name":"Cube and tetrahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":2,"beams":18},{"name":"Cube in a star tetrahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":3,"beams":24},{"name":"Truncated cube","fam":"In the animation","file":"geo/in-the-animation.json","pieces":1,"beams":36},{"name":"Truncated octahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":1,"beams":36},{"name":"Cube and octahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":2,"beams":36},{"name":"Truncated tetrahedra, interlocked","fam":"In the animation","file":"geo/in-the-animation.json","pieces":2,"beams":36},{"name":"Octahedron and star tetrahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":3,"beams":36},{"name":"Three squares","fam":"In the animation","file":"geo/in-the-animation.json","pieces":3,"beams":36},{"name":"Four triangles","fam":"In the animation","file":"geo/in-the-animation.json","pieces":4,"beams":36},{"name":"Tetrahedron and three squares","fam":"In the animation","file":"geo/in-the-animation.json","pieces":4,"beams":42},{"name":"Cuboctahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":1,"beams":48},{"name":"Truncated octahedron and cube","fam":"In the animation","file":"geo/in-the-animation.json","pieces":2,"beams":48},{"name":"Rhombic dodecahedron in a star","fam":"In the animation","file":"geo/in-the-animation.json","pieces":3,"beams":48},{"name":"Truncated cube and star","fam":"In the animation","file":"geo/in-the-animation.json","pieces":3,"beams":48},{"name":"Cube and three squares","fam":"In the animation","file":"geo/in-the-animation.json","pieces":4,"beams":48},{"name":"Octahedron and cube in a star","fam":"In the animation","file":"geo/in-the-animation.json","pieces":4,"beams":48},{"name":"Cuboctahedron and octahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":2,"beams":72},{"name":"Truncated cube, octahedron and star","fam":"In the animation","file":"geo/in-the-animation.json","pieces":4,"beams":72},{"name":"Truncated octahedron, cube and truncated tetrahedra","fam":"In the animation","file":"geo/in-the-animation.json","pieces":4,"beams":84},{"name":"Rhombicuboctahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":1,"beams":96},{"name":"Rhombicuboctahedron and octahedron","fam":"In the animation","file":"geo/in-the-animation.json","pieces":2,"beams":120},{"name":"Rhombicuboctahedron, octahedron and star","fam":"In the animation","file":"geo/in-the-animation.json","pieces":4,"beams":132},{"name":"Tetrahedron","fam":"Platonic","file":"geo/platonic.json","pieces":1,"beams":6},{"name":"Octahedron","fam":"Platonic","file":"geo/platonic.json","pieces":1,"beams":12},{"name":"Dodecahedron","fam":"Platonic","file":"geo/platonic.json","pieces":1,"beams":30},{"name":"Icosahedron","fam":"Platonic","file":"geo/platonic.json","pieces":1,"beams":30},{"name":"Truncated tetrahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":18},{"name":"Icosidodecahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":60},{"name":"Snub cube","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":60},{"name":"Truncated cuboctahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":72},{"name":"Truncated icosahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":90},{"name":"Truncated dodecahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":90},{"name":"Rhombicosidodecahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":120},{"name":"Snub dodecahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":150},{"name":"Truncated icosidodecahedron","fam":"Archimedean","file":"geo/archimedean.json","pieces":1,"beams":180},{"name":"Triakis tetrahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":18},{"name":"Triakis octahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":36},{"name":"Tetrakis hexahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":36},{"name":"Deltoidal icositetrahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":48},{"name":"Rhombic triacontahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":60},{"name":"Pentagonal icositetrahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":60},{"name":"Disdyakis dodecahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":72},{"name":"Pentakis dodecahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":90},{"name":"Triakis icosahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":90},{"name":"Deltoidal hexecontahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":120},{"name":"Pentagonal hexecontahedron","fam":"Catalan","file":"geo/catalan.json","pieces":1,"beams":150},{"name":"Triangular prism","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":9},{"name":"Pentagonal prism","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":15},{"name":"Pentagonal bipyramid","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":15},{"name":"Square antiprism","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":16},{"name":"Hexagonal prism","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":18},{"name":"Hexagonal bipyramid","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":18},{"name":"Pentagonal antiprism","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":20},{"name":"Octagonal prism","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":24},{"name":"Hexagonal antiprism","fam":"Prisms","file":"geo/prisms.json","pieces":1,"beams":24},{"name":"Square pyramid (J1)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":8},{"name":"Pentagonal pyramid (J2)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":10},{"name":"Triangular cupola (J3)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":15},{"name":"Square cupola (J4)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":20},{"name":"Pentagonal cupola (J5)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":25},{"name":"Pentagonal rotunda (J6)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":35},{"name":"Elongated triangular pyramid (J7)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":12},{"name":"Elongated square pyramid (J8)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":16},{"name":"Elongated pentagonal pyramid (J9)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":20},{"name":"Gyroelongated square pyramid (J10)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":20},{"name":"Gyroelongated pentagonal pyramid (J11)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":25},{"name":"Triangular bipyramid (J12)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":9},{"name":"Pentagonal bipyramid (J13)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":15},{"name":"Elongated triangular bipyramid (J14)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":15},{"name":"Elongated square bipyramid (J15)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":20},{"name":"Elongated pentagonal bipyramid (J16)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":25},{"name":"Gyroelongated square bipyramid (J17)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":24},{"name":"Elongated triangular cupola (J18)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":27},{"name":"Elongated square cupola (J19)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":36},{"name":"Elongated pentagonal cupola (J20)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":45},{"name":"Elongated pentagonal rotunda (J21)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":55},{"name":"Gyroelongated triangular cupola (J22)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":33},{"name":"Gyroelongated square cupola (J23)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":44},{"name":"Gyroelongated pentagonal cupola (J24)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":55},{"name":"Gyroelongated pentagonal rotunda (J25)","fam":"Johnson: pyramids and cupolas","file":"geo/johnson-pyramids-and-cupolas.json","pieces":1,"beams":65},{"name":"Gyrobifastigium (J26)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":14},{"name":"Triangular orthobicupola (J27)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":24},{"name":"Square orthobicupola (J28)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":32},{"name":"Square gyrobicupola (J29)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":32},{"name":"Pentagonal orthobicupola (J30)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":40},{"name":"Pentagonal gyrobicupola (J31)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":40},{"name":"Pentagonal orthocupolarotunda (J32)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":50},{"name":"Pentagonal gyrocupolarotunda (J33)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":50},{"name":"Pentagonal orthobirotunda (J34)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":60},{"name":"Elongated triangular orthobicupola (J35)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":36},{"name":"Elongated triangular gyrobicupola (J36)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":36},{"name":"Elongated square gyrobicupola (J37)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":48},{"name":"Elongated pentagonal orthobicupola (J38)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":60},{"name":"Elongated pentagonal gyrobicupola (J39)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":60},{"name":"Elongated pentagonal orthocupolarotunda (J40)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":70},{"name":"Elongated pentagonal gyrocupolarotunda (J41)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":70},{"name":"Elongated pentagonal orthobirotunda (J42)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":80},{"name":"Elongated pentagonal gyrobirotunda (J43)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":80},{"name":"Gyroelongated triangular bicupola (J44)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":42},{"name":"Gyroelongated square bicupola (J45)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":56},{"name":"Gyroelongated pentagonal bicupola (J46)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":70},{"name":"Gyroelongated pentagonal cupolarotunda (J47)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":80},{"name":"Gyroelongated pentagonal birotunda (J48)","fam":"Johnson: stretched and twisted","file":"geo/johnson-stretched-and-twisted.json","pieces":1,"beams":90},{"name":"Augmented triangular prism (J49)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":13},{"name":"Biaugmented triangular prism (J50)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":17},{"name":"Triaugmented triangular prism (J51)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":21},{"name":"Augmented pentagonal prism (J52)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":19},{"name":"Biaugmented pentagonal prism (J53)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":23},{"name":"Augmented hexagonal prism (J54)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":22},{"name":"Parabiaugmented hexagonal prism (J55)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":26},{"name":"Metabiaugmented hexagonal prism (J56)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":26},{"name":"Triaugmented hexagonal prism (J57)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":30},{"name":"Augmented dodecahedron (J58)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":35},{"name":"Parabiaugmented dodecahedron (J59)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":40},{"name":"Metabiaugmented dodecahedron (J60)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":40},{"name":"Triaugmented dodecahedron (J61)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":45},{"name":"Metabidiminished icosahedron (J62)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":20},{"name":"Tridiminished icosahedron (J63)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":15},{"name":"Augmented tridiminished icosahedron (J64)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":18},{"name":"Augmented truncated tetrahedron (J65)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":27},{"name":"Augmented truncated cube (J66)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":48},{"name":"Biaugmented truncated cube (J67)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":60},{"name":"Augmented truncated dodecahedron (J68)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":105},{"name":"Parabiaugmented truncated dodecahedron (J69)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":120},{"name":"Metabiaugmented truncated dodecahedron (J70)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":120},{"name":"Triaugmented truncated dodecahedron (J71)","fam":"Johnson: augmented and diminished","file":"geo/johnson-augmented-and-diminished.json","pieces":1,"beams":135},{"name":"Gyrate rhombicosidodecahedron (J72)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":120},{"name":"Parabigyrate rhombicosidodecahedron (J73)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":120},{"name":"Metabigyrate rhombicosidodecahedron (J74)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":120},{"name":"Trigyrate rhombicosidodecahedron (J75)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":120},{"name":"Diminished rhombicosidodecahedron (J76)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":105},{"name":"Paragyrate diminished rhombicosidodecahedron (J77)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":105},{"name":"Metagyrate diminished rhombicosidodecahedron (J78)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":105},{"name":"Bigyrate diminished rhombicosidodecahedron (J79)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":105},{"name":"Parabidiminished rhombicosidodecahedron (J80)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":90},{"name":"Metabidiminished rhombicosidodecahedron (J81)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":90},{"name":"Gyrate bidiminished rhombicosidodecahedron (J82)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":90},{"name":"Tridiminished rhombicosidodecahedron (J83)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":75},{"name":"Snub disphenoid (J84)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":18},{"name":"Snub square antiprism (J85)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":40},{"name":"Sphenocorona (J86)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":22},{"name":"Augmented sphenocorona (J87)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":26},{"name":"Sphenomegacorona (J88)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":28},{"name":"Hebesphenomegacorona (J89)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":33},{"name":"Disphenocingulum (J90)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":38},{"name":"Bilunabirotunda (J91)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":26},{"name":"Triangular hebesphenorotunda (J92)","fam":"Johnson: gyrate and rare","file":"geo/johnson-gyrate-and-rare.json","pieces":1,"beams":36},{"name":"Escher's solid","fam":"Stars","file":"geo/stars.json","pieces":3,"beams":36},{"name":"Stellated cube","fam":"Stars","file":"geo/stars.json","pieces":7,"beams":60},{"name":"Stellated octahedron spikes","fam":"Stars","file":"geo/stars.json","pieces":9,"beams":60},{"name":"Stellated cuboctahedron","fam":"Stars","file":"geo/stars.json","pieces":15,"beams":120},{"name":"Stellated rhombic dodecahedron","fam":"Stars","file":"geo/stars.json","pieces":13,"beams":120},{"name":"Small stellated dodecahedron","fam":"Stars","file":"geo/stars.json","pieces":13,"beams":150},{"name":"Great stellated dodecahedron","fam":"Stars","file":"geo/stars.json","pieces":21,"beams":150},{"name":"Spiked icosahedron","fam":"Stars","file":"geo/stars.json","pieces":21,"beams":150},{"name":"Spiked dodecahedron","fam":"Stars","file":"geo/stars.json","pieces":13,"beams":150},{"name":"Spiked truncated octahedron","fam":"Stars","file":"geo/stars.json","pieces":15,"beams":180},{"name":"Golden rhombohedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":12},{"name":"Trigonal trapezohedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":12},{"name":"Elongated dodecahedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":18},{"name":"Bilinski dodecahedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":24},{"name":"Tetragonal trapezohedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":24},{"name":"Pentagonal trapezohedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":30},{"name":"Quartz crystal","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":30},{"name":"Truncated octahedron as a zonohedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":36},{"name":"Hexagonal trapezohedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":36},{"name":"Rhombic icosahedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":40},{"name":"Nine-zone zonohedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":96},{"name":"Rhombic enneacontahedron","fam":"Zonohedra and crystals","file":"geo/zonohedra-and-crystals.json","pieces":1,"beams":180},{"name":"Octahedral geodesic dome","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":108},{"name":"Octahedral Goldberg ball","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":108},{"name":"Geodesic sphere, frequency 2","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":120},{"name":"Goldberg ball, frequency 2","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":120},{"name":"Geodesic sphere, frequency 3","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":270},{"name":"Goldberg ball, frequency 3","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":270},{"name":"Geodesic sphere, frequency 4","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":480},{"name":"Goldberg ball, frequency 4","fam":"Geodesic and Goldberg","file":"geo/geodesic-and-goldberg.json","pieces":1,"beams":480},{"name":"Two cubes","fam":"Compounds","file":"geo/compounds.json","pieces":2,"beams":24},{"name":"Two cubes on a diagonal","fam":"Compounds","file":"geo/compounds.json","pieces":2,"beams":24},{"name":"Five tetrahedra","fam":"Compounds","file":"geo/compounds.json","pieces":5,"beams":30},{"name":"Three cubes","fam":"Compounds","file":"geo/compounds.json","pieces":3,"beams":36},{"name":"Three octahedra","fam":"Compounds","file":"geo/compounds.json","pieces":3,"beams":36},{"name":"Cube in a dodecahedron","fam":"Compounds","file":"geo/compounds.json","pieces":2,"beams":42},{"name":"Star tetrahedron in a dodecahedron","fam":"Compounds","file":"geo/compounds.json","pieces":3,"beams":42},{"name":"Octahedron and icosahedron","fam":"Compounds","file":"geo/compounds.json","pieces":2,"beams":42},{"name":"Four cubes","fam":"Compounds","file":"geo/compounds.json","pieces":4,"beams":48},{"name":"Ten tetrahedra","fam":"Compounds","file":"geo/compounds.json","pieces":10,"beams":60},{"name":"Five cubes","fam":"Compounds","file":"geo/compounds.json","pieces":5,"beams":60},{"name":"Five octahedra","fam":"Compounds","file":"geo/compounds.json","pieces":5,"beams":60},{"name":"Dodecahedron and icosahedron","fam":"Compounds","file":"geo/compounds.json","pieces":2,"beams":60},{"name":"Five cubes in a dodecahedron","fam":"Compounds","file":"geo/compounds.json","pieces":6,"beams":90},{"name":"Icosidodecahedron and triacontahedron","fam":"Compounds","file":"geo/compounds.json","pieces":2,"beams":120},{"name":"Truncated icosahedron and pentakis","fam":"Compounds","file":"geo/compounds.json","pieces":2,"beams":180},{"name":"Six tetrahedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":6,"beams":36},{"name":"Cube and five tetrahedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":6,"beams":42},{"name":"Four octahedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":4,"beams":48},{"name":"Three square antiprisms","fam":"More compounds","file":"geo/more-compounds.json","pieces":3,"beams":48},{"name":"Four triangular antiprisms","fam":"More compounds","file":"geo/more-compounds.json","pieces":4,"beams":48},{"name":"Two icosahedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":2,"beams":60},{"name":"Two dodecahedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":2,"beams":60},{"name":"Five rhombohedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":5,"beams":60},{"name":"Six cubes","fam":"More compounds","file":"geo/more-compounds.json","pieces":6,"beams":72},{"name":"Four hexagonal prisms","fam":"More compounds","file":"geo/more-compounds.json","pieces":4,"beams":72},{"name":"Icosahedron and five octahedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":6,"beams":90},{"name":"Two snub cubes","fam":"More compounds","file":"geo/more-compounds.json","pieces":2,"beams":120},{"name":"Six pentagonal antiprisms","fam":"More compounds","file":"geo/more-compounds.json","pieces":6,"beams":120},{"name":"Two rhombic triacontahedra","fam":"More compounds","file":"geo/more-compounds.json","pieces":2,"beams":120},{"name":"Nested tetrahedra","fam":"Rings","file":"geo/rings.json","pieces":3,"beams":18},{"name":"Three triangles","fam":"Rings","file":"geo/rings.json","pieces":3,"beams":27},{"name":"Three golden rectangles","fam":"Rings","file":"geo/rings.json","pieces":3,"beams":36},{"name":"Three square prisms","fam":"Rings","file":"geo/rings.json","pieces":3,"beams":36},{"name":"Four triangular prisms","fam":"Rings","file":"geo/rings.json","pieces":4,"beams":36},{"name":"Rings through a cube","fam":"Rings","file":"geo/rings.json","pieces":4,"beams":48},{"name":"Three hexagonal prisms","fam":"Rings","file":"geo/rings.json","pieces":3,"beams":54},{"name":"Octahedron and three squares","fam":"Rings","file":"geo/rings.json","pieces":4,"beams":60},{"name":"Four hexagons","fam":"Rings","file":"geo/rings.json","pieces":4,"beams":72},{"name":"Six squares","fam":"Rings","file":"geo/rings.json","pieces":6,"beams":72},{"name":"Six pentagons","fam":"Rings","file":"geo/rings.json","pieces":6,"beams":90},{"name":"Ten triangles","fam":"Rings","file":"geo/rings.json","pieces":10,"beams":90},{"name":"Six pentagonal prisms","fam":"Rings","file":"geo/rings.json","pieces":6,"beams":90},{"name":"Dodecahedron and six pentagons","fam":"Rings","file":"geo/rings.json","pieces":7,"beams":120},{"name":"Golden rectangles and icosahedron","fam":"Rings","file":"geo/rings.json","pieces":4,"beams":126},{"name":"Kepler nested shells","fam":"Rings","file":"geo/rings.json","pieces":4,"beams":150},{"name":"Twelve pentagons","fam":"Rings","file":"geo/rings.json","pieces":12,"beams":180},{"name":"Halfway from tetrahedron to its twin","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":18},{"name":"Halfway from cube to tetrahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":24},{"name":"A quarter from cube to octahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":36},{"name":"Three quarters from cube to octahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":36},{"name":"Halfway from cube to rhombic dodecahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":48},{"name":"Halfway from octahedron to rhombic dodecahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":48},{"name":"Halfway from cube to dodecahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":48},{"name":"A quarter from dodecahedron to icosahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":90},{"name":"Three quarters from dodecahedron to icosahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":90},{"name":"Halfway from icosahedron to triacontahedron","fam":"In-between shapes","file":"geo/in-between-shapes.json","pieces":1,"beams":120}]};
+const SHAPES = DATA.shapes, BY = Object.fromEntries(SHAPES.map(s => [s.name, s]));
+const $ = id => document.getElementById(id);
+const FAM_NOTE = { 'In the animation': 'the forms in Concrete Frames', Platonic: 'the five regular solids', Archimedean: 'semi-regular solids', Catalan: 'their duals', Prisms: 'prisms, antiprisms and bipyramids',
+  'Johnson: pyramids and cupolas': 'J1–J25', 'Johnson: stretched and twisted': 'J26–J48', 'Johnson: augmented and diminished': 'J49–J71', 'Johnson: gyrate and rare': 'J72–J92',
+  Stars: 'spikes raised on every face', 'Zonohedra and crystals': 'diamond-faced and crystal shapes', 'Geodesic and Goldberg': 'domes of triangles and hexagons',
+  Compounds: 'interlocking solids', 'More compounds': 'more interlocking sets', Rings: 'flat frames threaded through each other', 'In-between shapes': 'part of the way from one solid to another' };
+$('sub').textContent = `${SHAPES.length} concrete frames in black ink on white: the 24 forms of the animation, then the Platonic, Archimedean and Catalan solids, all 92 Johnson solids, stars, crystals, geodesic domes, compounds and ring sculptures. Set the lamp and every plate is hatched from that side.`;
+
+// ---------- background colours: the page and the plates, remembered in this browser ----------
+const COLOR_DEF = { paper: '#f1f1f1', sheet: '#ffffff' };
+const COLORS = Object.assign({}, COLOR_DEF);
+try { const v = JSON.parse(localStorage.getItem('cf-colors') || 'null'); if (v) for (const k in COLOR_DEF) if (/^#[0-9a-f]{6}$/i.test(v[k] || '')) COLORS[k] = v[k]; } catch (e) {}
+function applyColors(save) {
+  const r = document.documentElement.style;
+  r.setProperty('--paper', COLORS.paper); r.setProperty('--sheet', COLORS.sheet);
+  // keep the faint lines and small print readable on a dark background
+  const lum = h => { const n = parseInt(h.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * (n >> 8 & 255) + 0.114 * (n & 255)) / 255; };
+  const dark = lum(COLORS.sheet) < 0.45;
+  r.setProperty('--muted', dark ? '#bdbdbd' : '#5c5c5c'); r.setProperty('--rule', dark ? '#6a6a6a' : '#cfcfcf');
+  $('cPaper').value = COLORS.paper; $('cSheet').value = COLORS.sheet;
+  if (save) try { localStorage.setItem('cf-colors', JSON.stringify(COLORS)); } catch (e) {}
+}
+$('cPaper').addEventListener('input', e => { COLORS.paper = e.target.value; applyColors(true); });
+$('cSheet').addEventListener('input', e => { COLORS.sheet = e.target.value; applyColors(true); });
+$('cReset').addEventListener('click', () => { Object.assign(COLORS, COLOR_DEF); applyColors(true); });
+applyColors(false);
+
+// ---------- the lamp ----------
+const LIGHT = { x: -0.45, y: 0.55, on: true };
+try { const v = JSON.parse(localStorage.getItem('cf-light') || 'null'); if (v && typeof v.x === 'number') Object.assign(LIGHT, v); } catch (e) {}
+const saveLight = () => { try { localStorage.setItem('cf-light', JSON.stringify(LIGHT)); } catch (e) {} };
+const lightListeners = [];
+function setLight(x, y, final) {
+  const r = Math.hypot(x, y); if (r > 1) { x /= r; y /= r; }
+  LIGHT.x = x; LIGHT.y = y; drawPads(); lightListeners.forEach(f => f(final)); if (final) saveLight();
+}
+const pads = [$('pad'), $('pad2')];
+function drawPads() {
+  for (const p of pads) { const s = p.querySelector('.sun'); s.style.left = (50 + LIGHT.x * 42) + '%'; s.style.top = (50 - LIGHT.y * 42) + '%'; p.classList.toggle('off', !LIGHT.on); }
+  $('shadeBtn').textContent = LIGHT.on ? 'Lines only' : 'Shade with hatching';
+}
+for (const p of pads) {
+  let on = false;
+  const at = e => { const r = p.getBoundingClientRect(); return [((e.clientX - r.left) / r.width - 0.5) / 0.42, -((e.clientY - r.top) / r.height - 0.5) / 0.42]; };
+  p.addEventListener('pointerdown', e => { e.stopPropagation(); on = true; p.setPointerCapture(e.pointerId); LIGHT.on = true; setLight(...at(e), false); });
+  p.addEventListener('pointermove', e => { if (on) setLight(...at(e), false); });
+  p.addEventListener('pointerup', e => { if (!on) return; on = false; setLight(...at(e), true); });
+  p.addEventListener('pointercancel', () => { on = false; setLight(LIGHT.x, LIGHT.y, true); });
+  p.addEventListener('dblclick', e => e.stopPropagation());
+  p.addEventListener('keydown', e => { const d = { ArrowLeft: [-.1, 0], ArrowRight: [.1, 0], ArrowUp: [0, .1], ArrowDown: [0, -.1] }[e.key]; if (d) { e.preventDefault(); setLight(LIGHT.x + d[0], LIGHT.y + d[1], true); } });
+}
+$('shadeBtn').addEventListener('click', () => { LIGHT.on = !LIGHT.on; drawPads(); lightListeners.forEach(f => f(true)); saveLight(); });
+drawPads();
+
+// ---------- the drawing engine: a normal + depth pass, then ink outlines and hatching from the lamp ----------
+const ENG = (() => {
+  if (!window.THREE) return null;
+  let R;
+  try { R = new THREE.WebGLRenderer({ antialias: false, alpha: true, preserveDrawingBuffer: true }); } catch (e) { return null; }
+  R.setPixelRatio(1); R.setClearColor(0x000000, 0);
+  const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(24, 1, 0.1, 100), group = new THREE.Group(); scene.add(group);
+  const nMat = new THREE.ShaderMaterial({
+    vertexShader: 'varying vec3 vN; varying float vZ; void main(){ vN = normalize(normalMatrix * normal); vec4 mv = modelViewMatrix * vec4(position, 1.); vZ = -mv.z; gl_Position = projectionMatrix * mv; }',
+    fragmentShader: 'varying vec3 vN; varying float vZ; void main(){ gl_FragColor = vec4(normalize(vN), vZ); }' });
+  const rt = new THREE.WebGLRenderTarget(4, 4, { type: THREE.HalfFloatType, minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, depthBuffer: true });
+  const U = { tex: { value: rt.texture }, px: { value: new THREE.Vector2() }, w: { value: 1 }, L: { value: new THREE.Vector3() }, shade: { value: 1 }, sp: { value: 6 } };
+  const edgeMat = new THREE.ShaderMaterial({ transparent: true, uniforms: U,
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }',
+    fragmentShader: `uniform sampler2D tex; uniform vec2 px; uniform float w, shade, sp; uniform vec3 L; varying vec2 vUv;
+      float edgeAt(vec2 uv){
+        vec4 c = texture2D(tex, uv); float e = 0.;
+        for (int k = 0; k < 4; k++) {
+          vec2 o = k == 0 ? vec2(w, 0.) : k == 1 ? vec2(0., w) : k == 2 ? vec2(w, w) : vec2(w, -w);
+          vec4 a = texture2D(tex, uv + o * px), b = texture2D(tex, uv - o * px);
+          float ca = step(0.001, c.w), aa = step(0.001, a.w), ab = step(0.001, b.w);
+          if (ca != aa || ca != ab) { e = 1.; continue; }
+          if (ca < .5) continue;
+          if (dot(c.xyz, a.xyz) < 0.97 || dot(c.xyz, b.xyz) < 0.97) e = 1.;
+          if (abs(a.w - 2. * c.w + b.w) > 0.006 * c.w / max(0.12, abs(c.z))) e = 1.;
+        }
+        return e;
+      }
+      float lines(float u, float hw){ float d = abs(fract(u / sp) - .5) * sp; return clamp(hw - d + .5, 0., 1.) * clamp(hw * 2.5, 0., 1.); }
+      void main(){
+        vec2 h = px * .25;
+        float e = (edgeAt(vUv - h) + edgeAt(vUv + vec2(h.x, -h.y)) + edgeAt(vUv + vec2(-h.x, h.y)) + edgeAt(vUv + h)) * .25;
+        vec4 c = texture2D(tex, vUv);
+        float ink = e;
+        if (shade > .5 && c.w > 0.001) {
+          float lam = max(0., dot(normalize(c.xyz), L));
+          float dk = clamp((0.88 - lam) / 0.88, 0., 1.);
+          vec2 f = gl_FragCoord.xy;
+          float h1 = lines((f.x + f.y) * .7071, sp * .5 * smoothstep(.2, 1., dk) * .55);
+          float h2 = lines((f.x - f.y) * .7071, sp * .5 * smoothstep(.6, 1., dk) * .45);
+          float h3 = lines(f.y, sp * .5 * smoothstep(.9, 1., dk) * .4);
+          ink = max(ink, max(h1, max(h2, h3)));
+        }
+        gl_FragColor = vec4(0., 0., 0., ink);
+      }` });
+  const qScene = new THREE.Scene(), flat = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  qScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), edgeMat));
+  const GEO = {}, files = {}, geos = {}, pool = [];
+  function load(names) {                     // fetch the family files these shapes live in
+    const need = [...new Set(names.map(n => BY[n] && BY[n].file).filter(Boolean))];
+    return Promise.all(need.map(f => files[f] || (files[f] = fetch(f).then(r => { if (!r.ok) throw new Error(f); return r.json(); }).then(j => Object.assign(GEO, j)))));
+  }
+  function geoFor(name) {
+    if (geos[name]) return geos[name];
+    const P = GEO[name].p, Nf = GEO[name].n, nor = new Float32Array(P.length);
+    for (let t = 0; t < Nf.length / 3; t++) for (let v = 0; v < 3; v++) for (let c = 0; c < 3; c++) nor[t * 9 + v * 3 + c] = Nf[t * 3 + c];
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+    let r = 0; for (let i = 0; i < P.length; i += 3) r = Math.max(r, Math.hypot(P[i], P[i+1], P[i+2]));
+    g.userData.r = r;
+    return geos[name] = g;
+  }
+  // items: [{ name, s, q }]; the whole piece turned by quat; drawn W pixels square
+  function render(items, quat, W) {
+    group.children.length = 0; let r = 0.01;
+    items.forEach((it, i) => {
+      if (!GEO[it.name]) return;
+      const m = pool[i] || (pool[i] = new THREE.Mesh(undefined, nMat)); m.frustumCulled = false;
+      m.geometry = geoFor(it.name); m.scale.setScalar(it.s); m.quaternion.copy(it.q); m.position.set(0, it.y || 0, 0); group.add(m);
+      r = Math.max(r, m.geometry.userData.r * it.s + Math.abs(it.y || 0));
+    });
+    group.quaternion.copy(quat);
+    const dist = r / Math.sin(THREE.MathUtils.degToRad(12)) * 1.08;
+    cam.position.set(0.35, 0.42, 1).normalize().multiplyScalar(dist); cam.lookAt(0, 0, 0);
+    cam.near = Math.max(0.01, dist - r * 1.6); cam.far = dist + r * 1.6; cam.updateProjectionMatrix();
+    if (R.domElement.width !== W) { R.setSize(W, W, false); rt.setSize(W * 2, W * 2); }
+    U.px.value.set(1 / (W * 2), 1 / (W * 2)); U.w.value = Math.max(1.5, W / 520); U.sp.value = Math.max(4, W / 120);
+    const z = Math.sqrt(Math.max(0, 1 - LIGHT.x * LIGHT.x - LIGHT.y * LIGHT.y));
+    U.L.value.set(LIGHT.x, LIGHT.y, z).normalize(); U.shade.value = LIGHT.on ? 1 : 0;
+    R.setRenderTarget(rt); R.clear(); R.render(scene, cam);
+    R.setRenderTarget(null); R.clear(); R.render(qScene, flat);
+    return R.domElement;
+  }
+  const normCache = {};
+  function normals(name) {                    // a shape's main face directions, weighted by area
+    if (normCache[name]) return normCache[name];
+    const P = GEO[name].p, Nf = GEO[name].n, acc = [], a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+    for (let t = 0; t < Nf.length / 3; t++) {
+      a.fromArray(P, t * 9); b.fromArray(P, t * 9 + 3).sub(a); c.fromArray(P, t * 9 + 6).sub(a);
+      const area = b.cross(c).length() / 2, n = new THREE.Vector3(Nf[t*3], Nf[t*3+1], Nf[t*3+2]).normalize();
+      const hit = acc.find(o => o.n.dot(n) > 0.999); if (hit) hit.a += area; else acc.push({ n, a: area });
+    }
+    const top = Math.max(...acc.map(o => o.a));
+    return normCache[name] = acc.filter(o => o.a > top * 0.15).map(o => o.n);
+  }
+  const extCache = {};
+  function extentY(name, q) {                 // lowest and highest point once turned, at full size
+    const k = name + '|' + q.toArray().map(v => v.toFixed(4)).join(',');
+    if (extCache[k]) return extCache[k];
+    const P = GEO[name].p, M = new THREE.Matrix4().makeRotationFromQuaternion(q).elements;
+    let lo = 1e9, hi = -1e9;
+    for (let i = 0; i < P.length; i += 3) { const y = M[1] * P[i] + M[5] * P[i+1] + M[9] * P[i+2]; if (y < lo) lo = y; if (y > hi) hi = y; }
+    return extCache[k] = [lo, hi];
+  }
+  return { load, render, normals, extentY };
+})();
+if (!ENG) $('nogl').hidden = false;
+const Q1 = new THREE.Quaternion(), q0 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.42);
+const blit = (cv, src) => { if (cv.width !== src.width) { cv.width = src.width; cv.height = src.height; } const x = cv.getContext('2d'); x.clearRect(0, 0, cv.width, cv.height); x.drawImage(src, 0, 0); };
+
+// ---------- turns for combinations ----------
+const PHI = (1 + Math.sqrt(5)) / 2;
+const TURNS = [
+  ['none', 'As it is', [0, 1, 0], 0], ['y45', 'Turn 45°', [0, 1, 0], Math.PI / 4], ['y90', 'Turn 90°', [0, 1, 0], Math.PI / 2],
+  ['x90', 'Lay on its side', [1, 0, 0], Math.PI / 2], ['x45', 'Tip 45°', [1, 0, 0], Math.PI / 4], ['z30', 'Roll 30°', [0, 0, 1], Math.PI / 6],
+  ['d60', '60° on a diagonal', [1, 1, 1], Math.PI / 3], ['f36', '36° five-fold', [0, 1, PHI], Math.PI / 5]];
+const turnQ = id => { const t = TURNS.find(t => t[0] === id) || TURNS[0]; return new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(...t[2]).normalize(), t[3]); };
+// together: every shape shares one centre. stacked: each one rests on top of the one before, first at the bottom.
+function itemsOf(layers, arrange) {
+  const items = layers.map(l => ({ name: l.name, s: l.size / 100, q: turnQ(l.turn), y: 0 }));
+  if (arrange !== 'stack' || !ENG) return items;
+  let top = 0;
+  for (const it of items) { const [lo, hi] = ENG.extentY(it.name, it.q); it.y = top - lo * it.s; top += (hi - lo) * it.s; }
+  for (const it of items) it.y -= top / 2;
+  return items;
+}
+
+// ---------- plates, drawn lazily as they scroll into view ----------
+const grid = $('grid'), dlg = $('dlg'), plates = [], secs = {}, toc = $('toc');
+function secFor(f, first) {
+  if (secs[f]) return secs[f];
+  const id = 'fam-' + f.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const sec = document.createElement('section'); sec.className = 'sec'; sec.id = id;
+  sec.innerHTML = `<h2>${f}<span>${FAM_NOTE[f] || ''}</span></h2><div class="grid"></div>`;
+  if (first) grid.prepend(sec); else grid.appendChild(sec);
+  if (f !== 'Your combinations') { const a = document.createElement('a'); a.href = '#' + id; a.textContent = f; toc.appendChild(a); }
+  return secs[f] = sec.querySelector('.grid');
+}
+const visible = new Set();
+const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => { for (const e of es) { const p = e.target._plate; if (e.isIntersecting) { visible.add(p); if (p.state !== 'done') queue(p); } else visible.delete(p); } }, { rootMargin: '400px 0px' }) : null;
+function makePlate(opts) {        // opts: { label, no, data, items(), open(), section, del }
+  const b = document.createElement('div'); b.className = 'plate'; b.tabIndex = 0; b.setAttribute('role', 'button');
+  b.innerHTML = `<div class="art"><canvas></canvas><div class="wait">Drawing…</div></div><div class="tb"><div class="no">${opts.no}</div><div class="meta"><div class="name"></div><div class="data"></div></div></div>`;
+  b.querySelector('.name').textContent = opts.label; b.querySelector('.data').textContent = opts.data;
+  const open = () => opts.open(); b.addEventListener('click', open); b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  if (opts.del) { const d = document.createElement('button'); d.className = 'del'; d.type = 'button'; d.textContent = 'Remove'; d.addEventListener('click', e => { e.stopPropagation(); opts.del(); }); b.appendChild(d); }
+  const p = { el: b, art: b.querySelector('.art'), cv: b.querySelector('canvas'), items: opts.items, names: opts.names, state: 'none' };
+  b._plate = p; plates.push(p);
+  return p;
+}
+let busy = false; const todo = [];
+function queue(p) { if (!todo.includes(p)) todo.push(p); pump(); }
+function pump() {
+  if (busy || !ENG) return;
+  const p = todo.shift(); if (!p) return;
+  if (!p.el.isConnected) { pump(); return; }
+  busy = true;
+  ENG.load(p.names()).then(() => {
+    requestAnimationFrame(() => {
+      const items = p.items();
+      const W = Math.min(800, Math.round(p.art.clientWidth * Math.min(2, devicePixelRatio || 1))) || 500;
+      try { blit(p.cv, ENG.render(items, q0, W)); p.art.classList.add('live'); p.state = 'done'; } catch (e) {}
+      busy = false; pump();
+    });
+  }).catch(() => { busy = false; pump(); });
+}
+lightListeners.push(final => { if (!final) return; for (const p of plates) p.state = 'stale'; todo.length = 0; for (const p of visible) queue(p); });
+let rsz = 0; addEventListener('resize', () => { clearTimeout(rsz); rsz = setTimeout(() => { for (const p of plates) p.state = 'stale'; for (const p of visible) queue(p); }, 300); });
+
+const shapePlates = [];
+const dataLine = s => `${s.pieces} ${s.pieces === 1 ? 'piece' : 'pieces'} · ${s.beams} beams`;
+SHAPES.forEach((s, i) => {
+  const no = String(i + 1).padStart(3, '0');
+  const p = makePlate({ label: s.name, no, data: dataLine(s), items: () => [{ name: s.name, s: 1, q: Q1 }], names: () => [s.name],
+    open: () => viewer.open({ title: s.name, no, data: dataLine(s), layers: [{ name: s.name, size: 100, turn: 'none' }], edit: false }) });
+  const home = secFor(s.fam); home.appendChild(p.el); shapePlates.push({ s, i, el: p.el, home }); if (io) io.observe(p.el); else queue(p);
+});
+
+// ---------- arrange plates by family, or as one run sorted by beam count ----------
+const allSec = document.createElement('section'); allSec.className = 'sec'; allSec.id = 'all-shapes'; allSec.hidden = true;
+allSec.innerHTML = '<h2>All shapes<span></span></h2><div class="grid"></div>'; grid.appendChild(allSec);
+const allGrid = allSec.querySelector('.grid');
+function arrangePlates(mode) {
+  const fam = mode === 'family';
+  for (const sp of shapePlates) sp.home.parentElement.hidden = !fam;
+  allSec.hidden = fam; toc.hidden = !fam;
+  if (fam) shapePlates.forEach(sp => sp.home.appendChild(sp.el));
+  else {
+    const dir = mode === 'complex' ? -1 : 1;
+    [...shapePlates].sort((a, b) => dir * (a.s.beams - b.s.beams || a.s.pieces - b.s.pieces) || a.i - b.i).forEach(sp => allGrid.appendChild(sp.el));
+    allSec.querySelector('h2 span').textContent = (mode === 'complex' ? 'most complex first' : 'simplest first') + ', by number of beams';
+  }
+  try { localStorage.setItem('cf-sort', mode); } catch (e) {}
+}
+{ let m = 'family'; try { m = localStorage.getItem('cf-sort') || 'family'; } catch (e) {}
+  if (!['family', 'simple', 'complex'].includes(m)) m = 'family';
+  $('sortBy').value = m; if (m !== 'family') arrangePlates(m);
+  $('sortBy').addEventListener('change', () => arrangePlates($('sortBy').value)); }
+
+// ---------- saved combinations (this browser only) ----------
+let COMBOS = [];
+try { COMBOS = JSON.parse(localStorage.getItem('cf-combos') || '[]').filter(c => c && Array.isArray(c.layers)); } catch (e) {}
+const saveCombos = () => { try { localStorage.setItem('cf-combos', JSON.stringify(COMBOS)); return true; } catch (e) { return false; } };
+let comboPlates = [];
+function drawCombos() {
+  for (const p of comboPlates) { p.el.remove(); if (io) io.unobserve(p.el); plates.splice(plates.indexOf(p), 1); visible.delete(p); }
+  comboPlates = [];
+  if (!COMBOS.length) { if (secs['Your combinations']) { secs['Your combinations'].parentElement.remove(); delete secs['Your combinations']; } return; }
+  const g = secFor('Your combinations', true);
+  COMBOS.forEach((c, i) => {
+    const p = makePlate({ label: c.name, no: 'C' + (i + 1), data: (c.arrange === 'stack' ? 'Stacked: ' : '') + c.layers.map(l => l.name.replace(/ \(J\d+\)$/, '')).join(c.arrange === 'stack' ? ' / ' : ' + '), items: () => itemsOf(c.layers, c.arrange), names: () => c.layers.map(l => l.name),
+      open: () => viewer.open({ title: c.name, no: 'C' + (i + 1), data: '', layers: JSON.parse(JSON.stringify(c.layers)), arrange: c.arrange || 'together', edit: true, saved: i }),
+      del: () => { COMBOS.splice(i, 1); saveCombos(); drawCombos(); } });
+    g.appendChild(p.el); comboPlates.push(p); if (io) io.observe(p.el); else queue(p);
+  });
+}
+drawCombos();
+
+// ---------- the spinning view, which is also the combination bench ----------
+const viewer = (() => {
+  const stage = $('stage'), cv = $('cv'), hint = $('hint');
+  const q = new THREE.Quaternion(), ax = new THREE.Vector3(), qd = new THREE.Quaternion();
+  const camQ = new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().lookAt(new THREE.Vector3(0.35, 0.42, 1).normalize(), new THREE.Vector3(), new THREE.Vector3(0, 1, 0)));
+  const UP = new THREE.Vector3(0, 1, 0), FACE = new THREE.Vector3(0.35, 0, 1).normalize();
+  let cur = null, raf = 0, last = 0, idle = 0, vel = { x: 0, y: 0 }, drag = null, dirty = true, anim = null, hold = false, ready = false;
+  function spin(dx, dy) {
+    if (dx) { ax.set(0, 1, 0).applyQuaternion(camQ); q.premultiply(qd.setFromAxisAngle(ax, dx)); }
+    if (dy) { ax.set(1, 0, 0).applyQuaternion(camQ); q.premultiply(qd.setFromAxisAngle(ax, dy)); }
+    q.normalize(); dirty = true;
+  }
+  stage.addEventListener('pointerdown', e => { anim = null; hold = false; drag = { x: e.clientX, y: e.clientY, t: performance.now() }; vel = { x: 0, y: 0 }; stage.classList.add('drag'); stage.setPointerCapture(e.pointerId); hint.hidden = true; });
+  stage.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const r = stage.getBoundingClientRect(), now = performance.now();
+    const dx = (e.clientX - drag.x) / r.width * 4, dy = (e.clientY - drag.y) / r.width * 4, dt = Math.max(8, now - drag.t);
+    spin(dx, dy); vel = { x: dx / dt * 16, y: dy / dt * 16 }; drag = { x: e.clientX, y: e.clientY, t: now }; idle = 0;
+  });
+  const up = () => { drag = null; stage.classList.remove('drag'); };
+  stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', up);
+  stage.addEventListener('dblclick', () => { q.copy(q0); vel = { x: 0, y: 0 }; idle = 0; hold = false; anim = null; dirty = true; });
+  lightListeners.push(() => { dirty = true; });
+  // ---- level buttons ----
+  function allNormals() {
+    const out = [];
+    for (const it of itemsOf(cur.layers, cur.arrange)) for (const n of ENG.normals(it.name)) out.push(n.clone().applyQuaternion(it.q));
+    return out;
+  }
+  const nearest = (dirs, qq, target, skip) => { let best = null, bd = -2; for (const n of dirs) { const w = n.clone().applyQuaternion(qq); if (skip && skip(w)) continue; const d = w.dot(target); if (d > bd) { bd = d; best = w; } } return best; };
+  function snap(kind) {
+    if (!ENG || !cur || !ready) return;
+    const dirs = allNormals();
+    let t = q.clone();
+    if (cur.arrange === 'stack') {              // a stack always stands upright: keep only its heading
+      const f = new THREE.Vector3(0, 0, 1).applyQuaternion(q); f.y = 0;
+      const yaw = f.lengthSq() > 1e-6 ? Math.atan2(f.x, f.z) : 0;
+      t = new THREE.Quaternion().setFromAxisAngle(UP, yaw);
+      if (kind === 'v') {                       // and turn it so the nearest upright face looks at you
+        const fh = FACE.clone(); let best = null, bd = -2;
+        for (const n of dirs) { const w = n.clone().applyQuaternion(t); if (Math.abs(w.y) > 0.2) continue; w.y = 0; w.normalize(); const d = w.dot(fh); if (d > bd) { bd = d; best = w; } }
+        if (best) t.premultiply(new THREE.Quaternion().setFromAxisAngle(UP, Math.atan2(best.clone().cross(fh).y, best.dot(fh))));
+      }
+    } else if (kind === 'h') { const w = nearest(dirs, t, UP); if (w) t.premultiply(new THREE.Quaternion().setFromUnitVectors(w, UP)); }
+    else {
+      const w = nearest(dirs, t, FACE); if (w) t.premultiply(new THREE.Quaternion().setFromUnitVectors(w, FACE));
+      const u = nearest(dirs, t, UP, x => Math.abs(x.dot(FACE)) > 0.2);
+      if (u) { const p = u.clone().sub(FACE.clone().multiplyScalar(u.dot(FACE))).normalize(), ang = Math.atan2(p.clone().cross(UP).dot(FACE), p.dot(UP));
+        if (Math.abs(ang) < Math.PI / 2 + 0.01) t.premultiply(new THREE.Quaternion().setFromAxisAngle(FACE, ang)); }
+    }
+    anim = { from: q.clone(), to: t.normalize(), k: 0 }; vel = { x: 0, y: 0 }; hold = true; hint.hidden = true;
+  }
+  for (const [id, k] of [['snapH', 'h'], ['snapV', 'v']]) {
+    const b = $(id); b.addEventListener('pointerdown', e => e.stopPropagation()); b.addEventListener('dblclick', e => e.stopPropagation());
+    b.addEventListener('click', e => { e.stopPropagation(); snap(k); });
+  }
+  function frame(now) {
+    raf = requestAnimationFrame(frame);
+    const dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+    if (anim) {
+      anim.k = Math.min(1, anim.k + dt / 0.6); const e = anim.k < .5 ? 4 * anim.k ** 3 : 1 - (-2 * anim.k + 2) ** 3 / 2;
+      q.slerpQuaternions(anim.from, anim.to, e); dirty = true; if (anim.k >= 1) anim = null;
+    } else if (!drag) {
+      idle += dt; vel.x *= Math.exp(-dt * 2.5); vel.y *= Math.exp(-dt * 2.5);
+      if (Math.abs(vel.x) + Math.abs(vel.y) > 1e-5) spin(vel.x, vel.y);
+      const auto = hold || matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : Math.min(1, Math.max(0, idle - 2.5)) * 0.25 * dt;
+      if (auto) { q.premultiply(qd.setFromAxisAngle(UP, auto)); q.normalize(); dirty = true; }
+    }
+    if (!dirty || !ready) return;
+    dirty = false;
+    const W = Math.min(1400, Math.round(cv.clientWidth * Math.min(2, devicePixelRatio || 1)));
+    if (W > 0) { blit(cv, ENG.render(itemsOf(cur.layers, cur.arrange), q, W)); stage.classList.add('live'); }
+  }
+  function reload() {                         // make sure every layer's family is loaded, then draw
+    ready = false; const want = cur;
+    if (!ENG) return;
+    ENG.load(cur.layers.map(l => l.name)).then(() => { if (cur === want) { ready = true; dirty = true; } });
+  }
+  // ---- the bench ----
+  const layersEl = $('layers');
+  const options = (() => { const fams = [...new Set(SHAPES.map(s => s.fam))];
+    return fams.map(f => `<optgroup label="${f}">` + SHAPES.filter(s => s.fam === f).map(s => `<option>${s.name.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</option>`).join('') + '</optgroup>').join(''); })();
+  const turnOpts = TURNS.map(t => `<option value="${t[0]}">${t[1]}</option>`).join('');
+  function drawLayers() {
+    layersEl.innerHTML = '';
+    const st = cur.arrange === 'stack', n = cur.layers.length;
+    const order = cur.layers.map((_, i) => i); if (st) order.reverse();   // a stack reads top first
+    order.forEach((i, shown) => {
+      const l = cur.layers[i];
+      const where = st ? (i === n - 1 ? 'top' : i === 0 ? 'bottom' : 'level ' + (i + 1)) : 'shape ' + (i + 1);
+      const row = document.createElement('div'); row.className = 'layer';
+      row.innerHTML = `<select class="shape" aria-label="Shape, ${where}">${options}</select><label>${st ? `<span class="pos">${n > 1 ? where : ''}</span>` : ''}Size <span class="pct"></span><input type="range" min="40" max="160" step="5" aria-label="Size, ${where}"></label><select class="turn" aria-label="Turn, ${where}">${turnOpts}</select><div class="mv"${st ? '' : ' hidden'}><button class="btn up" type="button" aria-label="Move ${where} up a level" title="Move up">↑</button><button class="btn dn" type="button" aria-label="Move ${where} down a level" title="Move down">↓</button></div><button class="btn rm" type="button" aria-label="Remove ${where}">✕</button>`;
+      const sel = row.querySelector('.shape'), turn = row.querySelector('.turn'), rng = row.querySelector('input'), lab = row.querySelector('.pct');
+      sel.value = l.name; rng.value = l.size; lab.textContent = l.size + '%'; turn.value = l.turn;
+      sel.addEventListener('change', () => { l.name = sel.value; changed(true); });
+      rng.addEventListener('input', () => { l.size = +rng.value; lab.textContent = l.size + '%'; changed(false); });
+      turn.addEventListener('change', () => { l.turn = turn.value; changed(false); });
+      const move = d => { const j = i + d; if (j < 0 || j >= n) return; [cur.layers[i], cur.layers[j]] = [cur.layers[j], cur.layers[i]]; drawLayers(); changed(false);
+        const f = layersEl.children[shown - d]; const k = f && f.querySelector(d > 0 ? '.up' : '.dn'); if (k && !k.disabled) k.focus(); };
+      const up = row.querySelector('.up'), dn = row.querySelector('.dn');
+      up.disabled = i === n - 1; dn.disabled = i === 0;
+      up.addEventListener('click', () => move(1)); dn.addEventListener('click', () => move(-1));
+      const rm = row.querySelector('.rm');
+      rm.disabled = n < 2;
+      rm.addEventListener('click', () => { if (cur.layers.length > 1) { cur.layers.splice(i, 1); drawLayers(); changed(true); } });
+      layersEl.appendChild(row);
+    });
+  }
+  $('arrange').addEventListener('change', () => { cur.arrange = $('arrange').value; anim = null; hold = false; drawLayers(); changed(false); });
+  function changed(load) { $('saveNote').textContent = ''; updateTitle(); if (load) reload(); else dirty = true; }
+  function updateTitle() {
+    if (!cur.edit) return;
+    $('dname').textContent = $('bname').value.trim() || 'Your combination';
+    const st = cur.arrange === 'stack';
+    $('ddata').textContent = (st ? 'Stacked: ' : '') + cur.layers.map(l => l.name.replace(/ \(J\d+\)$/, '')).join(st ? ' / ' : ' + ');
+    $('stackNote').textContent = st ? 'The list reads top to bottom, like the stack. Up to 8.' : 'Up to 8 shapes.';
+    $('addLayer').textContent = st ? 'Add on top' : 'Add a shape'; $('addBelow').hidden = !st;
+  }
+  const pick = () => SHAPES[Math.floor(Math.random() * SHAPES.length)].name;
+  const addShape = below => { if (cur.layers.length >= 8) { $('saveNote').textContent = 'Eight shapes is the most one piece can hold.'; return; }
+    const l = { name: pick(), size: 100, turn: TURNS[Math.floor(Math.random() * TURNS.length)][0] };
+    if (below) cur.layers.unshift(l); else cur.layers.push(l); drawLayers(); changed(true); };
+  $('addLayer').addEventListener('click', () => addShape(false));
+  $('addBelow').addEventListener('click', () => addShape(true));
+  $('randLayer').addEventListener('click', () => {
+    const n = 2 + Math.floor(Math.random() * 2);
+    cur.layers = Array.from({ length: n }, (_, i) => ({ name: pick(), size: [100, 80, 120, 65][i], turn: i ? TURNS[1 + Math.floor(Math.random() * (TURNS.length - 1))][0] : 'none' }));
+    drawLayers(); changed(true);
+  });
+  $('bname').addEventListener('input', updateTitle);
+  $('saveCombo').addEventListener('click', () => {
+    const name = $('bname').value.trim() || cur.layers.map(l => l.name.replace(/ \(J\d+\)$/, '')).join(' + ');
+    const entry = { name, arrange: cur.arrange || 'together', layers: JSON.parse(JSON.stringify(cur.layers)) };
+    if (typeof cur.saved === 'number' && COMBOS[cur.saved]) COMBOS[cur.saved] = entry; else { COMBOS.push(entry); cur.saved = COMBOS.length - 1; }
+    const ok = saveCombos(); drawCombos();
+    $('saveNote').textContent = ok ? 'Saved to Your combinations, at the top of the page.' : 'Shown at the top of the page, but this browser would not keep it after a reload.';
+  });
+  // ---- save the view as an image ----
+  const saveBtn = $('dsave'); let dl = null;
+  if (ENG && window.claude && window.claude.use) window.claude.use('downloads').then(d => { dl = d; saveBtn.hidden = !d; }).catch(() => {});
+  else if (ENG) {                                   // on your own site: a normal browser download
+    dl = { save: async ({ filename, data }) => { const u = URL.createObjectURL(data), a = document.createElement('a'); a.href = u; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); } };
+    saveBtn.hidden = false;
+  }
+  saveBtn.addEventListener('click', async () => {
+    if (!dl || !cur || !ready || saveBtn.disabled) return;
+    saveBtn.disabled = true; saveBtn.textContent = 'Drawing…';
+    let msg = 'Save image';
+    try {
+      const src = ENG.render(itemsOf(cur.layers, cur.arrange), q, 1600);   // the angle you're looking at, drawn large
+      const c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
+      const x = c.getContext('2d'); x.fillStyle = COLORS.sheet; x.fillRect(0, 0, c.width, c.height); x.drawImage(src, 0, 0);
+      dirty = true;
+      const blob = await new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej({ code: 'bad_request' }), 'image/png'));
+      const name = ($('dname').textContent || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'shape';
+      await dl.save({ filename: 'concrete-frames-' + name + '.png', data: blob });
+      msg = 'Saved';
+    } catch (e) {
+      const code = e && e.code;
+      if (code === 'declined') msg = 'Save image';
+      else if (code === 'rate_limited') msg = 'Try again';
+      else if (['unavailable', 'not_granted', 'capability_disabled', 'capability_removed'].includes(code)) { saveBtn.hidden = true; }
+      else msg = 'Could not save';
+    }
+    saveBtn.textContent = msg; saveBtn.disabled = false;
+    if (msg !== 'Save image') setTimeout(() => { saveBtn.textContent = 'Save image'; }, 2200);
+  });
+  return {
+    open(o) {
+      cur = o; $('dno').textContent = o.no; $('dname').textContent = o.title; $('ddata').textContent = o.data;
+      $('builder').hidden = !o.edit; $('saveNote').textContent = '';
+      if (o.edit) { cur.arrange = o.arrange || 'together'; $('arrange').value = cur.arrange; $('bname').value = o.title === 'Your combination' ? '' : o.title; drawLayers(); updateTitle(); }
+      stage.classList.remove('live'); hint.hidden = false;
+      q.copy(q0); vel = { x: 0, y: 0 }; idle = 0; last = 0; dirty = true; anim = null; hold = false;
+      dlg.classList.toggle('editing', !!o.edit);
+      if (!dlg.open) dlg.showModal();
+      dlg.scrollTop = 0;
+      reload(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+    },
+    close() { cancelAnimationFrame(raf); raf = 0; }
+  };
+})();
+$('newCombo').addEventListener('click', () => viewer.open({ title: 'Your combination', no: 'NEW', data: '', edit: true,
+  arrange: 'together', layers: [{ name: 'Dodecahedron', size: 100, turn: 'none' }, { name: 'Five tetrahedra', size: 110, turn: 'none' }] }));
+$('dclose').addEventListener('click', () => dlg.close());
+dlg.addEventListener('close', () => viewer.close());
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+</script>
+
+</body></html>
